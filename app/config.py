@@ -1,20 +1,29 @@
 from functools import lru_cache
-from pydantic_settings import BaseSettings
+from typing import Literal
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
 
 class Settings(BaseSettings):
-    app_name: str = "TITAN Threat Intelligence API"
-    env: str = Field("local", env="ENV")
-    database_url: str = Field("sqlite:///./titan.db", env="DATABASE_URL")
-    jwt_secret: str = Field(..., env="JWT_SECRET")           # required from env
-    jwt_algorithm: str = "12"  # HS256 default; set via env if you prefer
-    access_token_exp_minutes: int = Field(360, env="ACCESS_TOKEN_EXP_MINUTES")
-    rate_limit_per_minute: int = Field(120, env="RATE_LIMIT_PER_MINUTE")
+    # pydantic-settings v2 config
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        env_prefix="TITAN_",   # => TITAN_ENV, TITAN_DATABASE_URL, etc.
+    )
 
-    class Config:
-        env_file = ".env"
-        case_sensitive = False
+    app_name: str = "TITAN Threat Intelligence API"
+    env: str = "local"
+    database_url: str = "sqlite:///./titan.db"
+
+    # REQUIRED: must be present in environment/.env at startup
+    jwt_secret: str = Field(...)
+
+    jwt_algorithm: Literal["HS256"] = "HS256"
+
+    access_token_exp_minutes: int = 360
+    rate_limit_per_minute: int = 120
 
 @lru_cache
 def get_settings() -> Settings:
-    return Settings()  # reads from environment/.env
+    return Settings()
