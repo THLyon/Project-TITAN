@@ -2,6 +2,8 @@ from fastapi import FastAPI
 from app.routes import health, auth, iocs, intel
 from app.middleware.rate_limit import RateLimitMiddleware
 from app.logging_config import logger
+from sqlmodel import SQLModel
+from app.deps import engine
 
 app = FastAPI(
     title='TITAN Threat Intelligence API', 
@@ -21,6 +23,7 @@ app.include_router(intel.router, prefix="/intel", tags=["intel"])
 @app.on_event("startup")
 def startup_event():
     logger.info("Titan API starting up...")
+    SQLModel.metadata.create_all(engine)  # TEMP until Alembic
 
 @app.on_event("shutdown")
 def shutdown_event():

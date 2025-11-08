@@ -10,24 +10,30 @@ from app.auth import get_current_user
 router = APIRouter()
 
 @router.post("/bulkUpsert", response_model=List[IOCOut])
-def bulk_upsert(payload: List[IOCIn], db: Session = Depends(get_session), user=Depends(get_current_user)): 
+def bulk_upsert(
+    payload: List[IOCIn],
+    db: Session = Depends(get_session),
+    user=Depends(get_current_user)
+):
     results = []
-    for item in payload: 
-        existing = db.query(IOC).filter(IOC.type == item.type).first()
-        if existing: 
+    for item in payload:
+        existing = db.query(IOC).filter(IOC.type == item.type, IOC.value == item.value).first()
+        if existing:
             existing.last_seen = datetime.utcnow()
             existing.source = existing.source or item.source
-            existing.tages = sorted(set(existing.tags + item.tags))
+            existing.tags = sorted(set((existing.tags or []) + (item.tags or [])))
             db.add(existing)
             results.append(existing)
-        else: 
-            new = IOC(type=item.type, value=item.value, source=item.source, tags=item.tags)
-            db.add(new)
-            results.append(new)
+        else:
+            new_ioc = IOC(type=item.type, value=item.value, source=item.source, tags=item.tags)
+            db.add(new_ioc)
+            results.append(new_ioc)
+
     db.commit()
-    for ioc in results: 
+    for ioc in results:
         db.refresh(ioc)
     return results
+
 
 @router.get("", response_model=List[IOCOut])
 def list_iocs(

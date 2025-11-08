@@ -14,6 +14,6 @@ def session_context() -> Iterator[Session]:
         yield session
 
 def get_session() ->  Iterator[Session]:
-    with session_context as s: 
+    with session_context() as s: 
         yield s
 

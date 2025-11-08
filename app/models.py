@@ -15,5 +15,6 @@ class IOC(SQLModel, table=True):
     value: str = Field(index=True)
     source: Optional[str] = None
     tags: List[str] = Field(default_factory=list, sa_column=Column(SQLITE_JSON))
+    reputation: int = 0  # add to match IOCOut
     first_seen: datetime = Field(default_factory=datetime.utcnow)
     last_seen: datetime = Field(default_factory=datetime.utcnow)

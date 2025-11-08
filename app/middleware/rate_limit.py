@@ -1,5 +1,5 @@
 import time
-from fastapi import Request, Response
+from fastapi import Request, Response, JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from app.config import get_settings
 
@@ -31,5 +31,5 @@ class RateLimitMiddleware(BaseHTTPMiddleware):
         ip = request.client.host if request.client else "unknown"
         bucket = self.buckets.setdefault(ip, TokenBucket(self.rate))
         if not bucket.allow():
-            return Response("Too Many Requests", status_code=429)
+            return JSONResponse({"detail":"Too Many Requests"}, status_code=429, headers={"Retry-After":"60"})
         return await call_next(request)
