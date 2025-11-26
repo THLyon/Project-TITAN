@@ -9,6 +9,9 @@ build-backend = "setuptools.build_meta"
 name = "titan"
 version = "0.1.0"
 description = "TITAN IOC microservice (Lite Edition) — FastAPI + SQLModel"
+readme = "README.md"
+license = { text = "MIT" }
+authors = [{ name = "Tanner Lyon" }]
 requires-python = ">=3.11"
 dependencies = [
 "fastapi>=0.115.0",
