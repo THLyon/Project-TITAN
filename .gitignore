@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.pyd
+*.pyo
+*.egg-info/
+.eggs/
+.build/
+dist/
+build/
+pip-wheel-metadata/
+
+# Environments
+.venv/
+venv/
+.env
+.env.*
+.envrc
+.python-version
+
+# Caches & reports
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+.cache/
+
+# Local data / DB / artifacts
+*.db
+*.sqlite
+*.sqlite3
+titan.db
+instance/
+storage/
+data/
+*.log
+
+# OS / Editor junk
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/settings.json
