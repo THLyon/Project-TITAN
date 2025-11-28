@@ -1,4 +1,3 @@
-# app/schemas.py
 from typing import List, Optional, Annotated
 from pydantic import BaseModel, Field, StringConstraints
 from datetime import datetime

@@ -28,8 +28,13 @@ It ingests, triages, and summarizes cyber threat intelligence feeds in real time
 
 ---
 
-## Architecture Overview
-![Architecture Diagram](docs/architecture-diagram.png)
+## Design & Architecture
+
+- [API Notes](docs/API_notes.md)
+- [Commander View Mock](docs/commander_view.md)
+- [Full Threat Fusion Pipeline](docs/threat_fusion_pipeline.md)
+- [High-Level Architecture Diagram](docs/simple_architecture_diagram.md)
+
 
 ---
 
